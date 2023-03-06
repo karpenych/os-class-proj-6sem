@@ -1,10 +1,32 @@
-﻿namespace os_class_proj
+﻿
+
+namespace os_class_proj
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            //--------------------------------Lab1--------------------------------//
+
+            //Lab1.StartMulticast();
+            //Lab1.StartUPD(args);
+            //Lab1.StartTCP(args);
+
+
+            //--------------------------------Lab2--------------------------------//
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
