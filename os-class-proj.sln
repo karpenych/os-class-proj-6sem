@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "os-class-proj", "os-class-proj\os-class-proj.csproj", "{48258B5C-AADF-4816-8180-D0CC06C719C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "os-class-proj", "os-class-proj\os-class-proj.csproj", "{48258B5C-AADF-4816-8180-D0CC06C719C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1_TCP_SERVER", "Lab1_TCP_SERVER\Lab1_TCP_SERVER.csproj", "{3AECD26D-9740-4964-81CB-D5F2DE2D1E6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1_TCP_CLIENT", "Lab1_TCP_CLIENT\Lab1_TCP_CLIENT.csproj", "{33141A4C-0533-4146-B8C4-75098FF076AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{48258B5C-AADF-4816-8180-D0CC06C719C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48258B5C-AADF-4816-8180-D0CC06C719C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48258B5C-AADF-4816-8180-D0CC06C719C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AECD26D-9740-4964-81CB-D5F2DE2D1E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AECD26D-9740-4964-81CB-D5F2DE2D1E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AECD26D-9740-4964-81CB-D5F2DE2D1E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AECD26D-9740-4964-81CB-D5F2DE2D1E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33141A4C-0533-4146-B8C4-75098FF076AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33141A4C-0533-4146-B8C4-75098FF076AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33141A4C-0533-4146-B8C4-75098FF076AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33141A4C-0533-4146-B8C4-75098FF076AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

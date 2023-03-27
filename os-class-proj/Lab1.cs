@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Diagnostics;
+using System.Net.Http;
 
 namespace os_class_proj
 {
@@ -151,141 +152,6 @@ namespace os_class_proj
             }
         }
 
-        class TCP_
-        {
-            class Client1
-            {
-                static Socket sockCon = null;
-                string hostSrv;                        
-                int portSrv;                               
-                public Client1(string ip = "localhost", int p = 4000)
-                {
-                    hostSrv = ip;
-                    portSrv = p;
-                }
-
-
-                public void F()
-                {
-                    sockCon = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    sockCon.Connect(hostSrv, portSrv);
-                    if (sockCon.Connected == true) 
-                        Console.WriteLine(" Соединение с {0} установлено.", hostSrv);
-                    else
-                    {
-                        Console.WriteLine(" Не могу установить соединение с {0}.\n", hostSrv);
-                        return;
-                    }                                         
-                    string msg;
-                    int L;
-
-                    while (true)                                
-                    {
-                        Console.WriteLine(" Ввод сообщения : ");
-                        msg = Console.ReadLine();
-                        byte[] b = Encoding.Unicode.GetBytes(msg);
-
-                        sockCon.Send(b, msg.Length * 2, SocketFlags.None);
-                        if (msg.ToLower() == "end" || msg.ToLower() == "конец")                                               
-                        {
-                            sockCon.Shutdown(SocketShutdown.Both);                                                                       
-                            sockCon.Close();
-                            Console.WriteLine(" Клиент:  закрытие соединения.");
-                            break;
-                        }
-                        b = new byte[128];                   
-                        L = sockCon.Receive(b);            
-                        msg = Encoding.Unicode.GetString(b, 0, L);                                                                      
-                        Console.WriteLine(" Ответ сервера : {0} ({1} байт)", msg, L);
-                    }      
-                }             
-            }      
-            
-            class Server1
-            {
-                Socket sockCon = null;                    
-                Socket sockLstn = null;                  
-                string hostSrv = "localhost";         
-                int portSrv = 4000;  
-                
-                
-                public void F()
-                {
-                    try
-                    {
-                        IPHostEntry ipHost = Dns.GetHostEntry(hostSrv);
-                        IPAddress ipAddr = ipHost.AddressList[1];
-                        IPEndPoint localEndPoint = new(ipAddr, portSrv);
-                        Console.WriteLine(ipHost.HostName + "\n" + ipAddr.ToString());
-                        sockLstn = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        sockLstn.Bind(localEndPoint);
-                        sockLstn.Listen(1);
-                        if (sockLstn.IsBound) 
-                            Console.WriteLine("  Сервер: ожидание клиента ...");
-                        else
-                        {
-                            Console.WriteLine("  Сервер: не могу выполнить Bind().");
-                            return;
-                        }
-                        sockCon = sockLstn.Accept();        
-                        Console.WriteLine("  Сервер: клиент подключен.");
-                        string msg;
-                        byte[] b;
-                        int L;
-
-                        while (true)                       
-                        {
-                            b = new byte[128];     
-                            L = sockCon.Receive(b);            
-                            msg = Encoding.Unicode.GetString(b, 0, L);
-                            Console.WriteLine("  Сервер: получено: {0} ({1} байт)", msg, L);
-                            if (msg.ToLower() == "end" || msg.ToLower() == "конец")
-                            {
-                                sockCon.Shutdown(SocketShutdown.Both);
-                                sockCon.Close();
-                                sockLstn.Close();
-                                Console.WriteLine(" Сервер: закрытие соединения.");
-                                break;
-                            }
-                            msg = " Получено от клиента " + L.ToString() + " байт";
-                            b = new byte[128];
-                            b = Encoding.Unicode.GetBytes(msg);
-                            L = sockCon.Send(b, msg.Length * 2, SocketFlags.None);
-                        }
-                    }
-                    catch (SocketException e_) { Console.WriteLine("SocketException: " + e_.Message); }
-                }           
-            }            
-
-            public void Test(string[] args)
-            {
-                if (args.Length == 0)                      
-                {
-                    Server1 srv = new();    
-                    var dir = Directory.GetCurrentDirectory();
-                    var appName = Directory.GetFiles(dir)
-                                            .Where(fileName => fileName.EndsWith(".exe"))
-                                            .Select(fileName => fileName).ElementAt(0);
-                    Console.WriteLine("{0}", appName.ToString());
-                    ProcessStartInfo info = new()
-                    {
-                        FileName = appName.ToString(),
-                        Arguments = " 1 ",
-                        UseShellExecute = true
-                    };
-                    Process proc = Process.Start(info);     
-                    srv.F();                                      
-                    return;
-                }
-                else                                                   
-                {
-                    Client1 client = new();
-                    client.F();                
-                    return;
-                }
-            }
-        }
-
 
         public static void StartMulticast()
         {
@@ -297,12 +163,6 @@ namespace os_class_proj
         {
             UDP_ upd = new();
             upd.Test(args);
-        }
-
-        public static void StartTCP(string[] args)
-        {
-            TCP_ tcp = new();
-            tcp.Test(args);
         }
     }
 }

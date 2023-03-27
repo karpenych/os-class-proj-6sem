@@ -1,6 +1,4 @@
-﻿
-
-namespace os_class_proj
+﻿namespace os_class_proj
 {
     internal class Program
     {
@@ -10,21 +8,12 @@ namespace os_class_proj
 
             //Lab1.StartMulticast();
             //Lab1.StartUPD(args);
-            //Lab1.StartTCP(args);
 
 
             //--------------------------------Lab2--------------------------------//
+
+
         }
-
-
-
-
-
-
-
-
-
-
 
 
 
