@@ -1,6 +1,8 @@
 ﻿using System.IO.Pipes;
 using System;
 using System.Text;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Lab2_NPIPE_SERVER
 {
@@ -10,17 +12,21 @@ namespace Lab2_NPIPE_SERVER
 
         static void Main(string[] args)
         {
-            ServerThread();
+            new Thread(ServerThread).Start();
         }
 
         static void ServerThread()
         {
             cl_num++;
 
-            Console.WriteLine("Ожидание клиента № {0}. . .", cl_num);
             try
             {
                 NamedPipeServerStream server = new("MyPipe", PipeDirection.InOut, 3, PipeTransmissionMode.Byte, PipeOptions.None, 4096, 4096);
+                
+                GetRights(server);
+
+                Console.WriteLine("\n\n\nОжидание клиента № {0}. . .", cl_num);
+
                 server.WaitForConnection();         
                 Console.WriteLine("Клиент {0} подключен", cl_num);
                 while (true) 
@@ -48,6 +54,31 @@ namespace Lab2_NPIPE_SERVER
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        static public void GetRights(NamedPipeServerStream obj)
+        {
+            PipeSecurity sec_desc = obj.GetAccessControl();
+            AuthorizationRuleCollection rules = sec_desc.GetAccessRules(true, true, typeof(SecurityIdentifier));
+
+            foreach (AuthorizationRule rule in rules)
+            {
+                var pipeRule = rule as PipeAccessRule;
+                Console.WriteLine("Access type: {0}\nRights: {1}\nIdentity: {2}",
+                                  pipeRule.AccessControlType,
+                                  pipeRule.PipeAccessRights,
+                                  pipeRule.IdentityReference.Value);
+
+                PipeAccessRights pr1 = PipeAccessRights.Write & pipeRule.PipeAccessRights,
+                pr2 = PipeAccessRights.Delete & pipeRule.PipeAccessRights,
+                pr3 = PipeAccessRights.CreateNewInstance & pipeRule.PipeAccessRights,
+                pr4 = PipeAccessRights.Read & pipeRule.PipeAccessRights,
+                pr5 = PipeAccessRights.FullControl & pipeRule.PipeAccessRights;
+
+                Console.WriteLine("{0} | {1} | {2} | {3} | {4} \n", pr1, pr2, pr3, pr4, pr5);
+            }
+
+            Console.WriteLine("Sid Group: " + sec_desc.GetGroup(typeof(SecurityIdentifier)).Value);
         }
 
 
